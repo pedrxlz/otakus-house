@@ -1,3 +1,4 @@
+import { useRouter } from "next/router.js";
 import { Header } from "@/components/Header/index.jsx";
 import { Footer } from "@/components/Footer/index.jsx";
 
@@ -8,19 +9,23 @@ import "../styles/global.css";
 import Script from "next/script.js";
 
 export default function App({ Component, pageProps }) {
+  const router = useRouter();
+  const { route } = router;
+  const isLogin = route?.includes("login");
+
   return (
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Header />
+      {!isLogin && <Header />}
       <Script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"
       />
-      <Component {...pageProps} />;
-      <Footer />
+      <Component {...pageProps} />
+      {!isLogin && <Footer />}
     </>
   );
 }

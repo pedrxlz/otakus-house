@@ -1,0 +1,82 @@
+.formContainer {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.accountContainer {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .left {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    background: #00a39c;
+  }
+  .accountContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.41);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    width: fit-content;
+    margin-bottom: 100px;
+    border-radius: 999px;
+    padding: 5px;
+    gap: 8px;
+  }
+
+  .accountContainer button {
+    background-color: #00a39c;
+    text-decoration: none;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 999px;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .accountContainer p {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    color: #fff;
+    padding-left: 15px;
+  }
+}
+
+.right {
+  width: 100%;
+  height: 100%;
+  padding: 80px;
+}
+
+.formImgContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.formImg {
+  margin: 0 auto;
+  border-radius: 50%;
+  width: 250px;
+  height: 250px;
+}
+
+.btnLogin {
+  background-color: #00a39c;
+  color: #fff;
+}
