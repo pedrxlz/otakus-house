@@ -1,4 +1,5 @@
 import Image from "next/image.js";
+import styles from "./Checkout.module.css";
 
 export default function Checkout() {
   return (
@@ -12,7 +13,7 @@ export default function Checkout() {
           <div className="col-md-5 col-lg-4 order-md-last">
             <ul className="list-group mb-3">
               <li className="list-group-item lh-sm">
-                <div className="row room-info-container">
+                <div className={`row ${styles.roomInfoContainer}`}>
                   <Image
                     src="/images/MestreKameHouse.jpg"
                     className="img-thumbnail img-fluid col-4"

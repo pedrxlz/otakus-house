@@ -1,0 +1,17 @@
+.edit {
+  position: relative;
+}
+
+.editItem {
+  position: absolute;
+  top: 15px;
+  right: 5px;
+  border-bottom: 1px solid #212529;
+}
+
+.editItem:hover {
+  cursor: pointer;
+  color: #00a39c;
+  border-color: #00a39c;
+  transition: 0.2s ease-in-out;
+}

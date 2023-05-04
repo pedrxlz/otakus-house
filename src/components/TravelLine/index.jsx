@@ -1,10 +1,15 @@
 import Image from "next/image.js";
 
 import styles from "./TravelLine.module.css";
+import { useRouter } from "next/router.js";
 
 export default function TravelLine({ travel }) {
+  const router = useRouter();
   return (
-    <div className={styles.listCard} id="travel-01">
+    <div
+      className={styles.listCard}
+      onClick={() => router.push(`travels/${travel?.id}`)}
+    >
       <Image
         src={`/images/${travel?.image}`}
         className="img-thumbnail"

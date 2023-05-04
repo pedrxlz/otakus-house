@@ -1,0 +1,8 @@
+.roomInfoContainer {
+  padding: 20px 0;
+}
+
+.roomInfoContainer svg,
+.roomInfoContainer img {
+  border: none;
+}

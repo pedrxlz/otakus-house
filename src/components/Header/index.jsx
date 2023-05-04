@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { useMediaQuery } from "../../hooks/useMediaQuery.jsx";
 
 import Link from "next/link.js";
 
 export const Header = () => {
   const isMobile = useMediaQuery("(max-width: 992px)");
+  const [isLogged, setIsLogged] = useState(false);
 
   return (
     <nav className="navbar navbar-expand-lg">
@@ -44,18 +46,29 @@ export const Header = () => {
             </li>
             {isMobile && (
               <li className="nav-item">
-                <Link className="nav-link fw-semibold" href="/login">
-                  Login
-                </Link>
+                {!isLogged ? (
+                  <Link className="nav-link fw-semibold" href="/login">
+                    Login
+                  </Link>
+                ) : (
+                  <Link className="nav-link fw-semibold" href="/profile">
+                    Perfil
+                  </Link>
+                )}
               </li>
             )}
           </ul>
         </div>
-        {!isMobile && (
-          <Link href="/login" className="nav-link fw-semibold">
-            Login
-          </Link>
-        )}
+        {!isMobile &&
+          (!isLogged ? (
+            <Link href="/login" className="nav-link fw-semibold">
+              Login
+            </Link>
+          ) : (
+            <Link href="/profile" className="nav-link fw-semibold">
+              Perfil
+            </Link>
+          ))}
       </div>
     </nav>
   );

@@ -179,12 +179,3 @@
   border-color: #00a39c;
   transition: 0.2s ease-in-out;
 }
-
-.room-info-container {
-  padding: 20px 0;
-}
-
-.room-info-container svg,
-.room-info-container img {
-  border: none;
-}
