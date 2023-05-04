@@ -1,6 +1,6 @@
-import { Card } from "@/components/Card/index.jsx";
-import { SearchBar } from "@/components/SearchBar/index.jsx";
-import { items } from "@/constants/index.js";
+import { Card } from "../components/Card/index.jsx";
+import { SearchBar } from "../components/SearchBar/index.jsx";
+import { items } from "../constants/index.js";
 
 export default function Home() {
   return (

@@ -1,6 +1,10 @@
+import { useMediaQuery } from "../../hooks/useMediaQuery.jsx";
+
 import Link from "next/link.js";
 
-export const Header = ({}) => {
+export const Header = () => {
+  const isMobile = useMediaQuery("(max-width: 992px)");
+
   return (
     <nav className="navbar navbar-expand-lg">
       <div className="container-fluid">
@@ -38,9 +42,20 @@ export const Header = ({}) => {
                 Minhas reservas
               </Link>
             </li>
+            {isMobile && (
+              <li className="nav-item">
+                <Link className="nav-link fw-semibold" href="/login">
+                  Login
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
-        <div id="loginField"></div>
+        {!isMobile && (
+          <Link href="/login" className="nav-link fw-semibold">
+            Login
+          </Link>
+        )}
       </div>
     </nav>
   );

@@ -1,0 +1,15 @@
+.listCard {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+}
+
+.listCard img {
+  width: 108px;
+  height: 94px;
+  object-fit: cover;
+  border: none;
+  border-radius: 12px;
+}

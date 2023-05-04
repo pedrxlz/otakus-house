@@ -80,3 +80,30 @@ export const items = [
     date: "14 - 19 mar",
   },
 ];
+
+export const activeTravels = [
+  {
+    id: 1,
+    name: "Mansão do DIO!",
+    image: "DioMansion.jpg",
+    owner: "DIO",
+    date: "28 de dez. de 2023 – 30 de dez. de 2023",
+  },
+];
+
+export const expiredTravels = [
+  {
+    id: 1,
+    name: "Mansão do DIO!",
+    image: "DioMansion.jpg",
+    owner: "DIO",
+    date: "28 de dez. de 2023 – 30 de dez. de 2023",
+  },
+  {
+    id: 2,
+    name: "Kami House",
+    image: "MestreKameHouse.jpg",
+    owner: "Mestre Kame",
+    date: "28 de dez. de 2023 – 30 de dez. de 2023",
+  },
+];

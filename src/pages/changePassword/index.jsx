@@ -1,18 +1,12 @@
 import Image from "next/image.js";
-import styles from "./Login.module.css";
+import styles from "../findAccount/FindAccount.module.css";
 import { useRouter } from "next/router.js";
-import Link from "next/link.js";
 
-export default function Login() {
+export default function ChangePassword() {
   const router = useRouter();
   return (
     <div className={styles.formContainer}>
-      <div className={styles.left}>
-        <div className={styles.accountContainer}>
-          <p>Não tem uma conta?</p>
-          <button onClick={() => router.push("/register")}>Crie agora</button>
-        </div>
-      </div>
+      <div className={styles.left}></div>
       <div className={styles.right}>
         <main className="form-signin w-100 m-auto">
           <div className={styles.formImgContainer}>
@@ -25,40 +19,36 @@ export default function Login() {
             />
           </div>
           <br />
-          <h1 className="h3 mb-3 fw-normal">Entre com sua conta</h1>
+          <h1 className="h3 mb-3 fw-bolder">Redefinir senha</h1>
+          <h5 className="h5 mb-3 fw-normal">
+            Digite sua nova senha diferente da anterior
+          </h5>
           <div className="form-floating">
             <input
-              type="email"
+              type="text"
               className="form-control"
-              id="email"
+              id="password"
               placeholder="name@example.com"
             />
-            <label for="floatingInput">Email</label>
+            <label for="floatingInput">Senha</label>
           </div>
+
           <br />
           <div className="form-floating">
             <input
-              type="password"
+              type="text"
               className="form-control"
-              id="password"
+              id="confirmPassword"
               placeholder="Senha"
             />
-            <label for="floatingPassword">Senha</label>
-          </div>
-          <div className="text-end">
-            <Link
-              href="/findAccount"
-              className="text-body-emphasis text-decoration-none"
-            >
-              Esqueceu a senha?
-            </Link>
+            <label for="floatingPassword">Confirmar senha</label>
           </div>
           <br />
           <button
             className={`w-100 btn btn-lg ${styles.btnLogin}`}
             onClick={() => router.push("/")}
           >
-            Entrar
+            Redefinir
           </button>
         </main>
       </div>
