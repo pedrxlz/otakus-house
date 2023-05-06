@@ -4,13 +4,14 @@ import { api } from "../../services/api/index.js";
 const fetcher = (url) => api.get(url).then((res) => res.data);
 
 export const useUser = ({ email }) => {
-  const { data, isLoading, error } = useSWR(
+  const { data, mutate, isLoading, error } = useSWR(
     email ? `api/v1/user?email=${email}` : null,
     fetcher
   );
-  console.log(data);
+
   return {
     user: data,
+    mutate,
     isLoading,
     error: error?.response?.data?.error,
   };

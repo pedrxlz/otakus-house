@@ -4,7 +4,7 @@
 
 .editItem {
   position: absolute;
-  top: 15px;
+  top: 5px;
   right: 5px;
   border-bottom: 1px solid #212529;
 }
@@ -14,4 +14,19 @@
   color: #00a39c;
   border-color: #00a39c;
   transition: 0.2s ease-in-out;
+}
+
+.btnSave {
+  background-color: #00a39c;
+  color: #fff;
+}
+
+:hover .btnSave {
+  background-color: #00a39c;
+  color: #fff;
+}
+
+:active .btnSave {
+  background-color: #00a39c;
+  color: #fff;
 }

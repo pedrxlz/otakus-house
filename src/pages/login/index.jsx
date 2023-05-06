@@ -7,9 +7,9 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { setCookie } from "nookies";
 
-const saveAuthTokenToCookie = (token) => {
-  setCookie(null, "authToken", token, {
-    maxAge: 30 * 24 * 60 * 60, // seconds
+const saveUserToCookie = (token) => {
+  setCookie(null, "user", JSON.stringify(token), {
+    maxAge: 60 * 60, // seconds
     path: "/",
   });
 };
@@ -33,14 +33,17 @@ export default function Login() {
       },
       success: {
         render({ data }) {
-          saveAuthTokenToCookie(data?.token);
+          const _user = {
+            email: user?.email,
+            authToken: data?.token,
+          };
+          saveUserToCookie(_user);
           router.push("/");
         },
         autoClose: 1,
       },
       error: {
         render({ data }) {
-          console.log(data);
           return data?.response?.data?.error;
         },
       },

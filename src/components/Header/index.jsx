@@ -11,8 +11,10 @@ export const Header = () => {
   const [isLogged, setIsLogged] = useState();
 
   useEffect(() => {
-    if (!!cookies.authToken) setIsLogged(true);
-  }, [cookies.authToken]);
+    if (!!cookies.user) {
+      setIsLogged(true);
+    }
+  }, [cookies.user]);
 
   return (
     <nav className="navbar navbar-expand-lg">

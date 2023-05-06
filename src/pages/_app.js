@@ -40,7 +40,6 @@ export default function App({ Component, pageProps }) {
         newestOnTop={false}
         closeOnClick
         rtl={false}
-        pauseOnFocusLoss
         draggable
         theme={"light"}
       />
