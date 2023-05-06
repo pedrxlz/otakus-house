@@ -97,7 +97,7 @@ export default function Login() {
             </div>
             <div className="text-end">
               <Link
-                href="/findAccount"
+                href="/find-account"
                 className="text-body-emphasis text-decoration-none"
               >
                 Esqueceu a senha?

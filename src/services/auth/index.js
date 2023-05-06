@@ -30,3 +30,16 @@ export const logout = async () => {
 
   return data;
 };
+
+export const findAccount = async (str) => {
+  let key = "";
+  if (str.includes("@")) key = "email";
+  else key = "telefone";
+  const body = {
+    [key]: str,
+  };
+
+  const { data } = await api.put(`/api/v1/auth/forget-password`, body);
+
+  return data;
+};
