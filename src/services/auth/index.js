@@ -43,3 +43,18 @@ export const findAccount = async (str) => {
 
   return data;
 };
+
+export const resetPassword = async (newPassword, authToken) => {
+  const body = {
+    password: newPassword,
+  };
+
+  const { data } = await api.put(`/api/v1/auth/reset-password`, body, {
+    headers: {
+      "Skip-Interceptor": true,
+      authorization: authToken,
+    },
+  });
+
+  return data;
+};

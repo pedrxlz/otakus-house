@@ -8,8 +8,8 @@ const cookies = parseCookies();
 api.interceptors.request.use((config) => {
   if (!!cookies?.user) {
     const user = JSON.parse(cookies.user);
-
-    config.headers.authorization = user?.authToken;
+    const skipInterceptor = config.headers["Skip-Interceptor"];
+    if (!skipInterceptor) config.headers.authorization = user?.authToken;
   }
 
   return config;

@@ -34,7 +34,8 @@ export default function App({ Component, pageProps }) {
   const isLogin =
     route?.includes("login") ||
     route?.includes("find") ||
-    route?.includes("change");
+    route?.includes("change") ||
+    route?.includes("reset");
 
   return (
     <>
