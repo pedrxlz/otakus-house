@@ -1,11 +1,18 @@
-import { useState } from "react";
+import nookies, { parseCookies } from "nookies";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "../../hooks/useMediaQuery.jsx";
 
 import Link from "next/link.js";
 
 export const Header = () => {
   const isMobile = useMediaQuery("(max-width: 992px)");
-  const [isLogged, setIsLogged] = useState(false);
+  const cookies = parseCookies();
+
+  const [isLogged, setIsLogged] = useState();
+
+  useEffect(() => {
+    if (!!cookies.authToken) setIsLogged(true);
+  }, [cookies.authToken]);
 
   return (
     <nav className="navbar navbar-expand-lg">
@@ -46,29 +53,24 @@ export const Header = () => {
             </li>
             {isMobile && (
               <li className="nav-item">
-                {!isLogged ? (
-                  <Link className="nav-link fw-semibold" href="/login">
-                    Login
-                  </Link>
-                ) : (
-                  <Link className="nav-link fw-semibold" href="/profile">
-                    Perfil
-                  </Link>
-                )}
+                <Link
+                  className="nav-link fw-semibold"
+                  href={`/${isLogged ? "profile" : "login"}`}
+                >
+                  {isLogged ? "Perfil" : "Entrar"}
+                </Link>
               </li>
             )}
           </ul>
         </div>
-        {!isMobile &&
-          (!isLogged ? (
-            <Link href="/login" className="nav-link fw-semibold">
-              Login
-            </Link>
-          ) : (
-            <Link href="/profile" className="nav-link fw-semibold">
-              Perfil
-            </Link>
-          ))}
+        {!isMobile && (
+          <Link
+            className="nav-link fw-semibold"
+            href={`/${isLogged ? "profile" : "login"}`}
+          >
+            {isLogged ? "Perfil" : "Entrar"}
+          </Link>
+        )}
       </div>
     </nav>
   );

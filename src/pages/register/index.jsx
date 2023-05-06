@@ -19,7 +19,7 @@ export default function Register() {
     return user.password === user.confirmPassword;
   }, [user.confirmPassword, user.password]);
 
-  const registerUser = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
 
     toast.promise(register(user), {
@@ -51,7 +51,7 @@ export default function Register() {
             <div className="py-5 text-left">
               <h1 className="fw-bold text-body-emphasis">Cadastro</h1>
             </div>
-            <form onSubmit={registerUser}>
+            <form onSubmit={handleRegister}>
               <div className="row g-3">
                 <div className="form-floating">
                   <input
