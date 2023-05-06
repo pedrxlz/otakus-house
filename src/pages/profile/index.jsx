@@ -2,10 +2,11 @@ import { useRouter } from "next/router.js";
 import { useUser } from "../../hooks/swr/useUser.js";
 import styles from "./Profile.module.css";
 import { useEffect, useMemo, useState } from "react";
-import { parseCookies } from "nookies";
+import { destroyCookie, parseCookies } from "nookies";
 import { toast } from "react-toastify";
 import { editUser } from "../../services/user/index.js";
 import { getNameString } from "../../utils/index.js";
+import { logout } from "../../services/auth/index.js";
 
 export default function Profile() {
   const router = useRouter();
@@ -61,6 +62,31 @@ export default function Profile() {
           return `${getNameString(name)} alterado!`;
         },
         autoClose: 5000,
+      },
+      error: {
+        render({ data }) {
+          return data?.response?.data?.error;
+        },
+      },
+    });
+  };
+  console.log(userCookies);
+  const handleLogout = () => {
+    toast.promise(logout(), {
+      pending: {
+        render() {
+          return "Processando...";
+        },
+        icon: false,
+      },
+      success: {
+        render() {
+          mutate();
+          destroyCookie(null, "user");
+          router.push("/");
+          return `Usuário deslogado.`;
+        },
+        autoClose: 1000,
       },
       error: {
         render({ data }) {
@@ -279,6 +305,13 @@ export default function Profile() {
               </div>
               <hr />
             </div>
+            <button
+              type="button"
+              className="btn btn-outline-danger mt-2"
+              onClick={handleLogout}
+            >
+              Sair
+            </button>
           </div>
         </div>
       </main>

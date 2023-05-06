@@ -30,3 +30,13 @@
   background-color: #00a39c;
   color: #fff;
 }
+
+.logoutBtn {
+  background-color: transparent;
+  border: 1px solid #db1e1e;
+  border-radius: 14px;
+  width: 200px;
+  padding: 4px 10px;
+  font-weight: 600;
+  color: #db1e1e;
+}
