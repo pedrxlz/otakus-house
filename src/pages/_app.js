@@ -12,9 +12,24 @@ import "bootstrap/dist/css/bootstrap.css";
 import "../styles/global.css";
 import Script from "next/script.js";
 
+import { useEffect, useState } from "react";
+import { parseCookies } from "nookies";
+
 export default function App({ Component, pageProps }) {
   const router = useRouter();
   const { route } = router;
+
+  const [isLogged, setIsLogged] = useState(false);
+
+  const cookies = parseCookies();
+
+  useEffect(() => {
+    if (!!cookies.user) {
+      setIsLogged(true);
+    } else {
+      setIsLogged(false);
+    }
+  }, [cookies.user]);
 
   const isLogin =
     route?.includes("login") ||
@@ -26,7 +41,7 @@ export default function App({ Component, pageProps }) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      {!isLogin && <Header />}
+      {!isLogin && <Header isLogged={isLogged} />}
       <Script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

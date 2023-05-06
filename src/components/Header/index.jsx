@@ -1,20 +1,9 @@
-import nookies, { parseCookies } from "nookies";
-import { useEffect, useState } from "react";
 import { useMediaQuery } from "../../hooks/useMediaQuery.jsx";
 
 import Link from "next/link.js";
 
-export const Header = () => {
+export const Header = ({ isLogged }) => {
   const isMobile = useMediaQuery("(max-width: 992px)");
-  const cookies = parseCookies();
-
-  const [isLogged, setIsLogged] = useState();
-
-  useEffect(() => {
-    if (!!cookies.user) {
-      setIsLogged(true);
-    }
-  }, [cookies.user]);
 
   return (
     <nav className="navbar navbar-expand-lg">
