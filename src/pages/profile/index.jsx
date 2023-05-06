@@ -1,7 +1,7 @@
 import { useRouter } from "next/router.js";
 import { useUser } from "../../hooks/swr/useUser.js";
 import styles from "./Profile.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { parseCookies } from "nookies";
 import { toast } from "react-toastify";
 import { editUser } from "../../services/user/index.js";
@@ -16,8 +16,13 @@ export default function Profile() {
   const [tel, setTel] = useState("");
   const [address, setAddress] = useState("");
 
+  const userCookies = useMemo(() => {
+    const cookies = parseCookies();
+    return cookies?.user ? JSON.parse(cookies?.user) : null;
+  }, []);
+
   const { user, mutate, error } = useUser({
-    email: "camboim557@gmail.com",
+    email: userCookies?.email,
   });
 
   const getEditState = (str) => {
@@ -42,7 +47,7 @@ export default function Profile() {
       [name]: getEditState(name),
     };
 
-    toast.promise(editUser(_user, "camboim557@gmail.com"), {
+    toast.promise(editUser(_user, userCookies?.email), {
       pending: {
         render() {
           return "Processando...";
@@ -75,12 +80,12 @@ export default function Profile() {
   }, [address, email, name, tel, user]);
 
   useEffect(() => {
-    const cookies = parseCookies();
-    if (error === "User not found" || !cookies?.user) router.push("/login");
-  }, [error, router]);
+    if (error === "User not found" || userCookies === null)
+      router.push("/login");
+  }, [error, router, userCookies]);
 
   return (
-    <div className="container">
+    <div className="container mt-5">
       <main>
         <div className="text-left">
           <h1 className="fw-bolder">Perfil</h1>
