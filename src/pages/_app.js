@@ -5,6 +5,9 @@ import Head from "next/head";
 import { Header } from "../components/Header/index.jsx";
 import { Footer } from "../components/Footer/index.jsx";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import "bootstrap/dist/css/bootstrap.css";
 import "../styles/global.css";
 import Script from "next/script.js";
@@ -30,6 +33,19 @@ export default function App({ Component, pageProps }) {
         crossorigin="anonymous"
       />
       <Component {...pageProps} />
+      <ToastContainer
+        position="top-right"
+        autoClose={10000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={"light"}
+      />
+
       {!isLogin && <Footer />}
     </>
   );

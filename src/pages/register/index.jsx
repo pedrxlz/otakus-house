@@ -1,29 +1,57 @@
+import { useMemo, useState } from "react";
+import { register } from "../../services/auth/index.js";
+import { useRouter } from "next/router.js";
+import { toast } from "react-toastify";
+
 export default function Register() {
+  const router = useRouter();
+
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    tel: "",
+    address: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const IS_PASSWORD_VALIDATED = useMemo(() => {
+    return user.password === user.confirmPassword;
+  }, [user.confirmPassword, user.password]);
+
+  const registerUser = (e) => {
+    e.preventDefault();
+
+    toast.promise(register(user), {
+      pending: {
+        render() {
+          return "Processando...";
+        },
+        icon: false,
+      },
+      success: {
+        render() {
+          router.push("/login");
+          return `Usuário criado!`;
+        },
+      },
+      error: {
+        render() {
+          return "Usuário já existe!";
+        },
+      },
+    });
+  };
+
   return (
     <div className="container">
-      <div
-        className="toast align-items-center text-bg-primary border-0 position-fixed bottom-0 end-0 m-3"
-        id="liveToast"
-        role="alert"
-        aria-live="assertive"
-        aria-atomic="true"
-      >
-        <div className="d-flex">
-          <div className="toast-body">Usuário criado!</div>
-          <button
-            className="btn-close btn-close-white me-2 m-auto"
-            data-bs-dismiss="toast"
-            aria-label="Close"
-          ></button>
-        </div>
-      </div>
       <main>
         <div className="row">
           <div className="col-md-10 mx-auto">
             <div className="py-5 text-left">
               <h1 className="fw-bold text-body-emphasis">Cadastro</h1>
             </div>
-            <form className="needs-validation" id="registerForm">
+            <form onSubmit={registerUser}>
               <div className="row g-3">
                 <div className="form-floating">
                   <input
@@ -31,6 +59,9 @@ export default function Register() {
                     className="form-control"
                     id="name"
                     required
+                    minLength={3}
+                    value={user.name}
+                    onChange={(e) => setUser({ ...user, name: e.target.value })}
                   />
                   <label for="floatingInput" className="text-body-secondary">
                     Nome
@@ -42,6 +73,10 @@ export default function Register() {
                     className="form-control"
                     id="email"
                     required
+                    value={user.email}
+                    onChange={(e) =>
+                      setUser({ ...user, email: e.target.value })
+                    }
                   />
                   <label for="floatingInput" className="text-body-secondary">
                     Email
@@ -52,7 +87,10 @@ export default function Register() {
                     type="tel"
                     className="form-control"
                     id="tel"
+                    minLength={11}
                     required
+                    value={user.tel}
+                    onChange={(e) => setUser({ ...user, tel: e.target.value })}
                   />
                   <label for="floatingInput" className="text-body-secondary">
                     Telefone
@@ -64,6 +102,10 @@ export default function Register() {
                     className="form-control"
                     id="address"
                     required
+                    value={user.address}
+                    onChange={(e) =>
+                      setUser({ ...user, address: e.target.value })
+                    }
                   />
                   <label for="floatingInput" className="text-body-secondary">
                     Endereço
@@ -75,6 +117,11 @@ export default function Register() {
                     className="form-control"
                     id="password"
                     required
+                    value={user.password}
+                    minLength={6}
+                    onChange={(e) =>
+                      setUser({ ...user, password: e.target.value })
+                    }
                   />
                   <label for="floatingInput" className="text-body-secondary">
                     Senha
@@ -85,16 +132,34 @@ export default function Register() {
                     type="password"
                     className="form-control"
                     id="confirmPassword"
+                    minLength={6}
                     required
+                    value={user.confirmPassword}
+                    onChange={(e) =>
+                      setUser({ ...user, confirmPassword: e.target.value })
+                    }
                   />
                   <label for="floatingInput" className="text-body-secondary">
                     Confirmar Senha
                   </label>
+                  {!IS_PASSWORD_VALIDATED && (
+                    <span
+                      style={{
+                        color: "red",
+                        margin: "0",
+                        paddingTop: "4px",
+                        position: "absolute",
+                      }}
+                    >
+                      As senhas devem ser iguais
+                    </span>
+                  )}
                 </div>
 
                 <button
                   className="btn btn-primary btn-lg fw-bold mt-5"
                   style={{ backgroundColor: "#00a39c", border: "none" }}
+                  disabled={!IS_PASSWORD_VALIDATED}
                 >
                   Finalizar Cadastro
                 </button>
