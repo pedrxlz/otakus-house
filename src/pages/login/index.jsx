@@ -16,6 +16,7 @@ const saveUserToCookie = (token) => {
 
 export default function Login() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -23,16 +24,22 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     toast.promise(login(user), {
       pending: {
         render() {
-          return "Processando...";
+          return (
+            <div className="d-flex align-items-center gap-2">
+              <div className="spinner-border" role="status"></div>
+              <span>Processando...</span>
+            </div>
+          );
         },
         icon: false,
       },
       success: {
         render({ data }) {
+          setIsLoading(false);
           const _user = {
             email: user?.email,
             authToken: data?.token,
@@ -44,6 +51,7 @@ export default function Login() {
       },
       error: {
         render({ data }) {
+          setIsLoading(false);
           return data?.response?.data?.error;
         },
       },
@@ -104,8 +112,17 @@ export default function Login() {
               </Link>
             </div>
             <br />
-            <button className={`w-100 btn btn-lg ${styles.btnLogin}`}>
-              Entrar
+            <button
+              disabled={isLoading}
+              className={`w-100 btn btn-lg ${styles.btnLogin}`}
+            >
+              {isLoading ? (
+                <div className="d-flex align-items-center justify-content-center w-100">
+                  <div className="spinner-border" role="status"></div>
+                </div>
+              ) : (
+                "Entrar"
+              )}
             </button>
           </form>
         </main>

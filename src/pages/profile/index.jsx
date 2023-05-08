@@ -11,7 +11,7 @@ import { logout } from "../../services/auth/index.js";
 export default function Profile() {
   const router = useRouter();
   const [onEdit, setOnEdit] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [tel, setTel] = useState("");
@@ -47,7 +47,7 @@ export default function Profile() {
     const _user = {
       [name]: getEditState(name),
     };
-
+    setIsLoading(true);
     toast.promise(editUser(_user, userCookies?.email), {
       pending: {
         render() {
@@ -59,18 +59,20 @@ export default function Profile() {
         render() {
           mutate();
           setOnEdit("");
+          setIsLoading(false);
           return `${getNameString(name)} alterado!`;
         },
         autoClose: 5000,
       },
       error: {
         render({ data }) {
+          setIsLoading(false);
           return data?.response?.data?.error;
         },
       },
     });
   };
-  console.log(userCookies);
+
   const handleLogout = () => {
     toast.promise(logout(), {
       pending: {
