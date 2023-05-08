@@ -151,6 +151,7 @@ export default function Profile() {
                         name={"name"}
                         className={`btn btn-lg ${styles.btnSave}`}
                         onClick={handleEdit}
+                        disabled={isLoading}
                       >
                         Salvar
                       </button>
@@ -196,6 +197,7 @@ export default function Profile() {
                         name={"email"}
                         className={`btn btn-lg ${styles.btnSave}`}
                         onClick={handleEdit}
+                        disabled={isLoading}
                       >
                         Salvar
                       </button>
@@ -243,6 +245,7 @@ export default function Profile() {
                         name={"tel"}
                         className={`btn btn-lg ${styles.btnSave}`}
                         onClick={handleEdit}
+                        disabled={isLoading}
                       >
                         Salvar
                       </button>
@@ -288,6 +291,7 @@ export default function Profile() {
                         name={"address"}
                         className={`btn btn-lg ${styles.btnSave}`}
                         onClick={handleEdit}
+                        disabled={isLoading}
                       >
                         Salvar
                       </button>

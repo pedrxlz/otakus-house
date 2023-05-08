@@ -20,6 +20,8 @@ export default function App({ Component, pageProps }) {
 
   const [isLogged, setIsLogged] = useState(false);
 
+  const user = typeof window !== "undefined" && localStorage.getItem("user");
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     const user = localStorage.getItem("user");
@@ -31,7 +33,7 @@ export default function App({ Component, pageProps }) {
       setIsLogged(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localStorage.getItem("user")]);
+  }, [user]);
 
   const isLogin =
     route?.includes("login") ||
