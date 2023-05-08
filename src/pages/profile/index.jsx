@@ -2,7 +2,6 @@ import { useRouter } from "next/router.js";
 import { useUser } from "../../hooks/swr/useUser.js";
 import styles from "./Profile.module.css";
 import { useEffect, useMemo, useState } from "react";
-import { destroyCookie, parseCookies } from "nookies";
 import { toast } from "react-toastify";
 import { editUser } from "../../services/user/index.js";
 import { getNameString } from "../../utils/index.js";
@@ -11,19 +10,22 @@ import { logout } from "../../services/auth/index.js";
 export default function Profile() {
   const router = useRouter();
   const [onEdit, setOnEdit] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [tel, setTel] = useState("");
   const [address, setAddress] = useState("");
 
   const userCookies = useMemo(() => {
-    const cookies = parseCookies();
-    return cookies?.user ? JSON.parse(cookies?.user) : null;
+    if (typeof window !== "undefined") {
+      const _user = localStorage.getItem("user");
+      return !!_user ? JSON.parse(_user) : null;
+    }
   }, []);
 
   const { user, mutate, error } = useUser({
     email: userCookies?.email,
+    authorization: userCookies?.authToken,
   });
 
   const getEditState = (str) => {
@@ -47,42 +49,44 @@ export default function Profile() {
     const _user = {
       [name]: getEditState(name),
     };
-
+    setIsLoading(true);
     toast.promise(editUser(_user, userCookies?.email), {
       pending: {
         render() {
           return "Processando...";
         },
-        icon: false,
+        icon: true,
       },
       success: {
         render() {
           mutate();
           setOnEdit("");
+          setIsLoading(false);
           return `${getNameString(name)} alterado!`;
         },
         autoClose: 5000,
       },
       error: {
         render({ data }) {
+          setIsLoading(false);
           return data?.response?.data?.error;
         },
       },
     });
   };
-  console.log(userCookies);
+
   const handleLogout = () => {
-    toast.promise(logout(), {
+    toast.promise(logout({ authorization: userCookies?.authToken }), {
       pending: {
         render() {
           return "Processando...";
         },
-        icon: false,
+        icon: true,
       },
       success: {
         render() {
           mutate();
-          destroyCookie(null, "user");
+          localStorage.removeItem("user");
           router.push("/");
           return `Usuário deslogado.`;
         },
@@ -147,6 +151,7 @@ export default function Profile() {
                         name={"name"}
                         className={`btn btn-lg ${styles.btnSave}`}
                         onClick={handleEdit}
+                        disabled={isLoading}
                       >
                         Salvar
                       </button>
@@ -192,6 +197,7 @@ export default function Profile() {
                         name={"email"}
                         className={`btn btn-lg ${styles.btnSave}`}
                         onClick={handleEdit}
+                        disabled={isLoading}
                       >
                         Salvar
                       </button>
@@ -239,6 +245,7 @@ export default function Profile() {
                         name={"tel"}
                         className={`btn btn-lg ${styles.btnSave}`}
                         onClick={handleEdit}
+                        disabled={isLoading}
                       >
                         Salvar
                       </button>
@@ -284,6 +291,7 @@ export default function Profile() {
                         name={"address"}
                         className={`btn btn-lg ${styles.btnSave}`}
                         onClick={handleEdit}
+                        disabled={isLoading}
                       >
                         Salvar
                       </button>

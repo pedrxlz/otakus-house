@@ -27,7 +27,7 @@ export default function Register() {
         render() {
           return "Processando...";
         },
-        icon: false,
+        icon: true,
       },
       success: {
         render() {

@@ -5,17 +5,10 @@ import { useRouter } from "next/router.js";
 import Link from "next/link.js";
 import { toast } from "react-toastify";
 import { useState } from "react";
-import { setCookie } from "nookies";
-
-const saveUserToCookie = (token) => {
-  setCookie(null, "user", JSON.stringify(token), {
-    maxAge: 60 * 60, // seconds
-    path: "/",
-  });
-};
 
 export default function Login() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -23,27 +16,29 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     toast.promise(login(user), {
       pending: {
         render() {
           return "Processando...";
         },
-        icon: false,
+        icon: true,
       },
       success: {
         render({ data }) {
+          setIsLoading(false);
           const _user = {
             email: user?.email,
             authToken: data?.token,
           };
-          saveUserToCookie(_user);
+          localStorage.setItem("user", JSON.stringify(_user));
           router.push("/");
         },
         autoClose: 1,
       },
       error: {
         render({ data }) {
+          setIsLoading(false);
           return data?.response?.data?.error;
         },
       },
@@ -104,8 +99,17 @@ export default function Login() {
               </Link>
             </div>
             <br />
-            <button className={`w-100 btn btn-lg ${styles.btnLogin}`}>
-              Entrar
+            <button
+              disabled={isLoading}
+              className={`w-100 btn btn-lg ${styles.btnLogin}`}
+            >
+              {isLoading ? (
+                <div className="d-flex align-items-center justify-content-center w-100">
+                  <div className="spinner-border" role="status"></div>
+                </div>
+              ) : (
+                "Entrar"
+              )}
             </button>
           </form>
         </main>

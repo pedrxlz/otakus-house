@@ -80,3 +80,13 @@
   background-color: #00a39c;
   color: #fff;
 }
+
+.btnLogin:hover {
+  background-color: #7ec5c2;
+  color: #fff;
+}
+
+.btnLogin:disabled {
+  background-color: #5d5e5e;
+  color: #fff;
+}

@@ -1,12 +1,15 @@
 import useSWR from "swr";
 import { api } from "../../services/api/index.js";
 
-const fetcher = (url) => api.get(url).then((res) => res.data);
+const fetcher = (url, authorization) =>
+  api
+    .get(url, { headers: { authorization: authorization } })
+    .then((res) => res.data);
 
-export const useUser = ({ email }) => {
+export const useUser = ({ email, authorization }) => {
   const { data, mutate, isLoading, error } = useSWR(
-    email ? `api/v1/user?email=${email}` : null,
-    fetcher
+    authorization && email ? `api/v1/user?email=${email}` : null,
+    (url) => fetcher(url, authorization)
   );
 
   return {

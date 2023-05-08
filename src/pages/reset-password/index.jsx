@@ -24,7 +24,7 @@ export default function ChangePassword() {
         render() {
           return "Processando...";
         },
-        icon: false,
+        icon: true,
       },
       success: {
         render() {

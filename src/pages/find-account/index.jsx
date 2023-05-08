@@ -6,23 +6,27 @@ import { findAccount } from "../../services/auth/index.js";
 
 export default function FindAccount() {
   const [value, setValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleFindAccount = () => {
+    setIsLoading(true);
     toast.promise(findAccount(value), {
       pending: {
         render() {
           return "Processando...";
         },
-        icon: false,
+        icon: true,
       },
       success: {
         render() {
+          setIsLoading(false);
           return "Um email foi enviado para você com as instruções para recuperar sua conta.";
         },
         autoClose: 5000,
       },
       error: {
         render({ data }) {
+          setIsLoading(false);
           return data?.response?.data?.error;
         },
       },
@@ -63,6 +67,7 @@ export default function FindAccount() {
           <button
             className={`w-100 btn btn-lg ${styles.btnLogin}`}
             onClick={handleFindAccount}
+            disabled={isLoading}
           >
             Recuperar conta
           </button>
