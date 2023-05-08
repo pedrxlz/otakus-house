@@ -25,8 +25,12 @@ export const login = async (user) => {
   return data;
 };
 
-export const logout = async () => {
-  const { data } = await api.get("/api/v1/auth/logout");
+export const logout = async ({ authorization }) => {
+  const { data } = await api.get("/api/v1/auth/logout", {
+    headers: {
+      authorization: authorization,
+    },
+  });
 
   return data;
 };

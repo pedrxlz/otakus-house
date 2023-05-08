@@ -2,7 +2,6 @@ import { useRouter } from "next/router.js";
 import { useUser } from "../../hooks/swr/useUser.js";
 import styles from "./Profile.module.css";
 import { useEffect, useMemo, useState } from "react";
-import { destroyCookie, parseCookies } from "nookies";
 import { toast } from "react-toastify";
 import { editUser } from "../../services/user/index.js";
 import { getNameString } from "../../utils/index.js";
@@ -18,12 +17,15 @@ export default function Profile() {
   const [address, setAddress] = useState("");
 
   const userCookies = useMemo(() => {
-    const cookies = parseCookies();
-    return cookies?.user ? JSON.parse(cookies?.user) : null;
+    if (typeof window !== "undefined") {
+      const _user = localStorage.getItem("user");
+      return !!_user ? JSON.parse(_user) : null;
+    }
   }, []);
 
   const { user, mutate, error } = useUser({
     email: userCookies?.email,
+    authorization: userCookies?.authToken,
   });
 
   const getEditState = (str) => {
@@ -53,7 +55,7 @@ export default function Profile() {
         render() {
           return "Processando...";
         },
-        icon: false,
+        icon: true,
       },
       success: {
         render() {
@@ -74,17 +76,17 @@ export default function Profile() {
   };
 
   const handleLogout = () => {
-    toast.promise(logout(), {
+    toast.promise(logout({ authorization: userCookies?.authToken }), {
       pending: {
         render() {
           return "Processando...";
         },
-        icon: false,
+        icon: true,
       },
       success: {
         render() {
           mutate();
-          destroyCookie(null, "user");
+          localStorage.removeItem("user");
           router.push("/");
           return `Usuário deslogado.`;
         },

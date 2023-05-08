@@ -5,14 +5,6 @@ import { useRouter } from "next/router.js";
 import Link from "next/link.js";
 import { toast } from "react-toastify";
 import { useState } from "react";
-import { setCookie } from "nookies";
-
-const saveUserToCookie = (token) => {
-  setCookie(null, "user", JSON.stringify(token), {
-    maxAge: 60 * 60, // seconds
-    path: "/",
-  });
-};
 
 export default function Login() {
   const router = useRouter();
@@ -28,14 +20,9 @@ export default function Login() {
     toast.promise(login(user), {
       pending: {
         render() {
-          return (
-            <div className="d-flex align-items-center gap-2">
-              <div className="spinner-border" role="status"></div>
-              <span>Processando...</span>
-            </div>
-          );
+          return "Processando...";
         },
-        icon: false,
+        icon: true,
       },
       success: {
         render({ data }) {
@@ -44,7 +31,7 @@ export default function Login() {
             email: user?.email,
             authToken: data?.token,
           };
-          saveUserToCookie(_user);
+          localStorage.setItem("user", JSON.stringify(_user));
           router.push("/");
         },
         autoClose: 1,

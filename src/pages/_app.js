@@ -13,7 +13,6 @@ import "../styles/global.css";
 import Script from "next/script.js";
 
 import { useEffect, useState } from "react";
-import { parseCookies } from "nookies";
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
@@ -21,15 +20,18 @@ export default function App({ Component, pageProps }) {
 
   const [isLogged, setIsLogged] = useState(false);
 
-  const cookies = parseCookies();
-
   useEffect(() => {
-    if (!!cookies.user) {
+    if (typeof window === "undefined") return;
+    const user = localStorage.getItem("user");
+    const userObj = JSON.parse(user);
+
+    if (userObj?.authToken) {
       setIsLogged(true);
     } else {
       setIsLogged(false);
     }
-  }, [cookies.user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localStorage.getItem("user")]);
 
   const isLogin =
     route?.includes("login") ||
