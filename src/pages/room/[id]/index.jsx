@@ -76,7 +76,7 @@ const Room = () => {
               <div className="custom-card">
                 <div className="card-header">
                   <p className="fs-3">
-                    <b>R$500</b> noite
+                    <b>R${room?.price}</b> noite
                   </p>
                 </div>
 
