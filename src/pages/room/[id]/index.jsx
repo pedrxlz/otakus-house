@@ -1,3 +1,4 @@
+import { useRoom } from "@/hooks/swr/useRoom.js";
 import Image from "next/image.js";
 import { useRouter } from "next/router.js";
 
@@ -5,6 +6,8 @@ const Room = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  const { room } = useRoom({ id });
+  console.log(room);
   return (
     <>
       <div className="container">
@@ -13,13 +16,13 @@ const Room = () => {
             <div className="carousel-item active carousel-img-item">
               <Image
                 className="w-100 carousel-img"
-                src="/images/Casa Paradis.webp"
+                src={`/images/${room?.image}`}
                 width={300}
                 height={200}
                 alt="image"
               />
             </div>
-            <div className="carousel-item carousel-img-item">
+            {/* <div className="carousel-item carousel-img-item">
               <Image
                 className="w-100 carousel-img"
                 src="/images/GraceField.jpg"
@@ -36,7 +39,7 @@ const Room = () => {
                 height={200}
                 alt="image"
               />
-            </div>
+            </div> */}
           </div>
           <button
             className="carousel-control-prev"
@@ -62,21 +65,11 @@ const Room = () => {
         <section className="description-container">
           <div className="row">
             <div className="description col-lg-8">
-              <h1>Titulo</h1>
+              <h1>{room?.name}</h1>
               <h5>7 hóspedes - 2 quartos - 7 camas - 2 banheiros</h5>
               <h6>Ceará, Brasil</h6>
               <hr />
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-                id lectus vel nibh hendrerit condimentum non vitae risus. Fusce
-                luctus neque id augue accumsan, a lacinia odio tempor. Integer
-                mollis, ante eu venenatis tempus, erat sapien maximus ligula, in
-                interdum magna felis eu sapien. Quisque placerat laoreet
-                condimentum. Praesent vel cursus felis, eu aliquet lacus. Ut
-                gravida arcu hendrerit imperdiet suscipit. Curabitur facilisis,
-                orci et sollicitudin eleifend, orci nisl pulvinar sem, quis
-                blandit justo est a lorem.
-              </p>
+              <p>{room?.description}</p>
             </div>
 
             <div className="col-lg-4">

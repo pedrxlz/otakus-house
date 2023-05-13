@@ -12,7 +12,7 @@ export default function Home() {
         <div className="container">
           <SearchBar />
           <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
-            {isLoading ? (
+            {!isLoading ? (
               rooms?.map((item) => (
                 <div key={item?.id} className="col">
                   <Card item={item} />
