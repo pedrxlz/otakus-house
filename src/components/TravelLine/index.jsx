@@ -8,19 +8,22 @@ export default function TravelLine({ travel }) {
   return (
     <div
       className={styles.listCard}
-      onClick={() => router.push(`travels/${travel?.id}`)}
+      onClick={() => router.push(`travels/${travel?._id}`)}
     >
       <Image
-        src={`/images/${travel?.image}`}
+        src={`/images/${travel?.room?.image}`}
         className="img-thumbnail"
         width={200}
         height={200}
         alt="travel"
       />
       <div>
-        <h5 className="fw-bolder h5">{travel?.name}</h5>
-        <p className="fw-normal mb-1">Anfitrião: {travel?.owner}</p>
-        <p className="fw-normal mb-1">{travel?.date}</p>
+        <h5 className="fw-bolder h5">{travel?.room?.name}</h5>
+        <p className="fw-normal mb-1">Anfitrião: {travel?.room?.owner}</p>
+        <p className="fw-normal mb-1">
+          {new Date(travel?.checkinDate).toLocaleDateString()} -{" "}
+          {new Date(travel?.checkoutDate).toLocaleDateString()}
+        </p>
       </div>
     </div>
   );

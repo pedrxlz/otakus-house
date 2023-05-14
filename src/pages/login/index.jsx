@@ -28,7 +28,8 @@ export default function Login() {
         render({ data }) {
           setIsLoading(false);
           const _user = {
-            email: user?.email,
+            email: data?.email,
+            _id: data?._id,
             authToken: data?.token,
           };
           localStorage.setItem("user", JSON.stringify(_user));
@@ -76,7 +77,7 @@ export default function Login() {
                 value={user.email}
                 onChange={(e) => setUser({ ...user, email: e.target.value })}
               />
-              <label for="floatingInput">Email</label>
+              <label htmlFor="floatingInput">Email</label>
             </div>
             <br />
             <div className="form-floating">
@@ -88,7 +89,7 @@ export default function Login() {
                 value={user.password}
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
               />
-              <label for="floatingPassword">Senha</label>
+              <label htmlFor="floatingPassword">Senha</label>
             </div>
             <div className="text-end">
               <Link

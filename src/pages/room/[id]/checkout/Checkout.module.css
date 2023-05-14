@@ -6,3 +6,32 @@
 .roomInfoContainer img {
   border: none;
 }
+
+.btnSave {
+  background-color: #00a39c;
+  color: #fff;
+}
+
+:hover .btnSave {
+  background-color: #00a39c;
+  color: #fff;
+}
+
+:active .btnSave {
+  background-color: #00a39c;
+  color: #fff;
+}
+
+.editItem {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border-bottom: 1px solid #212529;
+}
+
+.editItem:hover {
+  cursor: pointer;
+  color: #00a39c;
+  border-color: #00a39c;
+  transition: 0.2s ease-in-out;
+}

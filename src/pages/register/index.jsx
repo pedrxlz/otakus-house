@@ -63,7 +63,10 @@ export default function Register() {
                     value={user.name}
                     onChange={(e) => setUser({ ...user, name: e.target.value })}
                   />
-                  <label for="floatingInput" className="text-body-secondary">
+                  <label
+                    htmlFor="floatingInput"
+                    className="text-body-secondary"
+                  >
                     Nome
                   </label>
                 </div>
@@ -78,7 +81,10 @@ export default function Register() {
                       setUser({ ...user, email: e.target.value })
                     }
                   />
-                  <label for="floatingInput" className="text-body-secondary">
+                  <label
+                    htmlFor="floatingInput"
+                    className="text-body-secondary"
+                  >
                     Email
                   </label>
                 </div>
@@ -92,7 +98,10 @@ export default function Register() {
                     value={user.tel}
                     onChange={(e) => setUser({ ...user, tel: e.target.value })}
                   />
-                  <label for="floatingInput" className="text-body-secondary">
+                  <label
+                    htmlFor="floatingInput"
+                    className="text-body-secondary"
+                  >
                     Telefone
                   </label>
                 </div>
@@ -107,7 +116,10 @@ export default function Register() {
                       setUser({ ...user, address: e.target.value })
                     }
                   />
-                  <label for="floatingInput" className="text-body-secondary">
+                  <label
+                    htmlFor="floatingInput"
+                    className="text-body-secondary"
+                  >
                     Endereço
                   </label>
                 </div>
@@ -123,7 +135,10 @@ export default function Register() {
                       setUser({ ...user, password: e.target.value })
                     }
                   />
-                  <label for="floatingInput" className="text-body-secondary">
+                  <label
+                    htmlFor="floatingInput"
+                    className="text-body-secondary"
+                  >
                     Senha
                   </label>
                 </div>
@@ -139,7 +154,10 @@ export default function Register() {
                       setUser({ ...user, confirmPassword: e.target.value })
                     }
                   />
-                  <label for="floatingInput" className="text-body-secondary">
+                  <label
+                    htmlFor="floatingInput"
+                    className="text-body-secondary"
+                  >
                     Confirmar Senha
                   </label>
                   {!IS_PASSWORD_VALIDATED && (
