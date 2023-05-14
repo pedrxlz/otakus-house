@@ -104,35 +104,19 @@ export default function Travel() {
             <div className={styles.customCard}>
               <div className={styles.infoDateContainer}>
                 <div className={styles.infoDateField}>
-                  <div>
-                    <small className="fw-bolder">Checkin</small>
-                    <h3 className="fs-6">
-                      {new Date(travel?.checkinDate)?.toLocaleDateString()}
-                    </h3>
-                    <p className="fs-6">
-                      {new Date(travel?.checkinDate)?.getHours()}:
-                      {new Date(travel?.checkoutDate)?.getMinutes() === 0
-                        ? "00"
-                        : new Date(travel?.checkoutDate)?.getMinutes() === 0}
-                    </p>
-                  </div>
+                  <small className="fw-bolder">Checkin</small>
+                  <p className="fs-6 mb-0">
+                    {new Date(travel?.checkinDate)?.toLocaleString()}
+                  </p>
                 </div>
                 <div
                   className={styles.infoDateField}
                   style={{ borderLeft: "1px solid rgb(199, 199, 199)" }}
                 >
-                  <div>
-                    <small className="fw-bolder">Checkout</small>
-                    <h6 className="fs-6">
-                      {new Date(travel?.checkoutDate)?.toLocaleDateString()}
-                    </h6>
-                    <p className="fs-6">
-                      {new Date(travel?.checkoutDate)?.getHours()}:
-                      {new Date(travel?.checkoutDate)?.getMinutes() === 0
-                        ? "00"
-                        : new Date(travel?.checkoutDate)?.getMinutes() === 0}
-                    </p>
-                  </div>
+                  <small className="fw-bolder">Checkout</small>
+                  <p className="fs-6 mb-0">
+                    {new Date(travel?.checkoutDate)?.toLocaleString()}
+                  </p>
                 </div>
               </div>
               <br />
