@@ -16,7 +16,7 @@ export const useTravel = ({ id }) => {
   );
 
   return {
-    travel: data[0],
+    travel: data?.[0],
     mutate,
     isLoading,
     error: error?.response?.data?.error,
