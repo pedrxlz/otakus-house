@@ -1,5 +1,6 @@
 import { useRoom } from "@/hooks/swr/useRoom.js";
 import { diffDays, urlParams } from "@/utils/index.js";
+import Head from "next/head.js";
 import Image from "next/image.js";
 import { useRouter } from "next/router.js";
 import { useMemo } from "react";
@@ -36,6 +37,10 @@ const Room = () => {
 
   return (
     <>
+      <Head>
+        <title>Reservar - {room?.name} </title>
+        <link rel="icon" href="/images/OtakusHouse.png" />
+      </Head>
       <div className="container">
         <div id="carrossel" className="carousel slide">
           <div className="carousel-inner">

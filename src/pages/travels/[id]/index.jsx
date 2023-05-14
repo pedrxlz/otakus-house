@@ -4,6 +4,7 @@ import { useRouter } from "next/router.js";
 import { useTravel } from "@/hooks/swr/useTravel.js";
 import { cancelBooking } from "@/services/booking/index.js";
 import { toast } from "react-toastify";
+import Head from "next/head.js";
 
 export default function Travel() {
   const router = useRouter();
@@ -36,6 +37,10 @@ export default function Travel() {
 
   return (
     <div className="container">
+      <Head>
+        <title>OtakusHouse - {travel?.room?.name}</title>
+        <link rel="icon" href="/images/OtakusHouse.png" />
+      </Head>
       <div id="carrossel" className="carousel slide">
         <div className="carousel-inner">
           <div className="carousel-item active carousel-img-item">

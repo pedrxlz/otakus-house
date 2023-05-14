@@ -7,6 +7,7 @@ import { useRoom } from "@/hooks/swr/useRoom.js";
 import { useMemo } from "react";
 import { createBooking } from "@/services/booking/index.js";
 import { toast } from "react-toastify";
+import Head from "next/head.js";
 
 export default function Checkout() {
   const router = useRouter();
@@ -64,6 +65,10 @@ export default function Checkout() {
 
   return (
     <div className="container">
+      <Head>
+        <title>Reservar - {room?.name}</title>
+        <link rel="icon" href="/images/OtakusHouse.png" />
+      </Head>
       <main>
         <div className="text-left">
           <h1 className="fw-bolder">Reservar</h1>

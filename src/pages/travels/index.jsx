@@ -4,6 +4,7 @@ import { useState } from "react";
 import styles from "./Travels.module.css";
 import { useUserTravels } from "@/hooks/swr/useUserTravels.js";
 import TravelLineSkeleton from "@/components/TravelLine/TravelLineSkeleton.jsx";
+import Head from "next/head.js";
 
 export default function Travels() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -11,6 +12,10 @@ export default function Travels() {
 
   return (
     <div className="container">
+      <Head>
+        <title>OtakusHouse - Suas viagens</title>
+        <link rel="icon" href="/images/OtakusHouse.png" />
+      </Head>
       <main>
         <div className="text-left">
           <h1 className="fw-bolder">Suas viagens</h1>

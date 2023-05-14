@@ -10,7 +10,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Home - OtakusHouse</title>
+        <title>OtakusHouse - Home</title>
+        <link rel="icon" href="/images/OtakusHouse.png" />
       </Head>
       <main>
         <div className="container">
