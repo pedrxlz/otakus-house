@@ -28,7 +28,8 @@ export default function Login() {
         render({ data }) {
           setIsLoading(false);
           const _user = {
-            email: user?.email,
+            email: data?.email,
+            _id: data?._id,
             authToken: data?.token,
           };
           localStorage.setItem("user", JSON.stringify(_user));

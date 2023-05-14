@@ -5,6 +5,8 @@ import { useState } from "react";
 import { diffDays } from "@/utils/index.js";
 import { useRoom } from "@/hooks/swr/useRoom.js";
 import { useMemo } from "react";
+import { createBooking } from "@/services/booking/index.js";
+import { toast } from "react-toastify";
 
 export default function Checkout() {
   const router = useRouter();
@@ -24,6 +26,40 @@ export default function Checkout() {
     const value = e.target.value;
     setTravelForm((prev) => {
       return { ...prev, [key]: value };
+    });
+  };
+
+  const handleCheckout = (e) => {
+    e.preventDefault();
+    const user = JSON.parse(localStorage.getItem("user"));
+    const body = {
+      user: user._id,
+      room: room._id,
+      checkinDate: new Date(travelForm.checkin).getTime(),
+      checkoutDate: new Date(travelForm.checkout).getTime(),
+      guests: travelForm.guests,
+    };
+
+    toast.promise(createBooking(body), {
+      pending: {
+        render() {
+          return "Processando...";
+        },
+        icon: true,
+      },
+      success: {
+        render() {
+          localStorage.removeItem("user");
+          router.push("/");
+          return `Reserva efetuada!`;
+        },
+        autoClose: 1000,
+      },
+      error: {
+        render({ data }) {
+          return data?.response?.data?.error;
+        },
+      },
     });
   };
 
@@ -202,7 +238,7 @@ export default function Checkout() {
                 )}
               </div>
             </div>
-            <form className="needs-validation">
+            <form className="needs-validation" onSubmit={handleCheckout}>
               <hr className="my-4" />
 
               <h4 className="mb-3">Pagamento</h4>
@@ -309,7 +345,6 @@ export default function Checkout() {
               <button
                 className="w-100 btn btn-lg btn-primary"
                 style={{ backgroundColor: "#00a39c" }}
-                type="submit"
               >
                 Reservar
               </button>
