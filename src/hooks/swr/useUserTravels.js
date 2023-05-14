@@ -7,7 +7,8 @@ const fetcher = (url, authorization) =>
     .then((res) => res.data);
 
 export const useUserTravels = ({ expired }) => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user =
+    typeof window !== "undefined" && JSON.parse(localStorage.getItem("user"));
 
   const { data, mutate, isLoading, error } = useSWR(
     user._id
