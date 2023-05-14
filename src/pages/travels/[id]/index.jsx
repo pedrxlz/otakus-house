@@ -2,12 +2,37 @@ import Image from "next/image.js";
 import styles from "./Travel.module.css";
 import { useRouter } from "next/router.js";
 import { useTravel } from "@/hooks/swr/useTravel.js";
+import { cancelBooking } from "@/services/booking/index.js";
+import { toast } from "react-toastify";
 
 export default function Travel() {
   const router = useRouter();
   const { id } = router.query;
 
   const { travel } = useTravel({ id });
+
+  const handleCancel = () => {
+    toast.promise(cancelBooking({ id }), {
+      pending: {
+        render() {
+          return "Processando...";
+        },
+        icon: true,
+      },
+      success: {
+        render() {
+          router.push("/travels");
+          return `Sua viagem foi cancelada`;
+        },
+        autoClose: 1000,
+      },
+      error: {
+        render({ data }) {
+          return data?.response?.data?.error;
+        },
+      },
+    });
+  };
 
   return (
     <div className="container">
@@ -110,10 +135,16 @@ export default function Travel() {
                   </div>
                 </div>
               </div>
-
               <br />
-
-              <br />
+              <div className="d-flex justify-content-center">
+                <button
+                  type="button"
+                  className="btn btn-outline-danger w-100"
+                  onClick={handleCancel}
+                >
+                  Cancelar viagem
+                </button>
+              </div>
             </div>
           </div>
         </div>

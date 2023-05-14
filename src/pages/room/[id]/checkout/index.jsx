@@ -49,8 +49,7 @@ export default function Checkout() {
       },
       success: {
         render() {
-          localStorage.removeItem("user");
-          router.push("/");
+          router.push("/travels");
           return `Reserva efetuada!`;
         },
         autoClose: 1000,

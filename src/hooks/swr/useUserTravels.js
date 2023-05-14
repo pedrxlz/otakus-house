@@ -11,7 +11,7 @@ export const useUserTravels = ({ expired }) => {
     typeof window !== "undefined" && JSON.parse(localStorage.getItem("user"));
 
   const { data, mutate, isLoading, error } = useSWR(
-    user._id
+    user?._id
       ? `api/v1/booking/get-bookings?userId=${user._id}&expired=${expired}`
       : null,
     (url) => fetcher(url, user.authToken)

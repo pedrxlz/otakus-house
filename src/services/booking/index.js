@@ -10,3 +10,14 @@ export const createBooking = async (body) => {
 
   return data;
 };
+
+export const cancelBooking = async ({ id }) => {
+  const user = typeof window !== "undefined" && localStorage.getItem("user");
+  if (!user) return;
+  const userObj = JSON.parse(user);
+  const { data } = await api.delete(`/api/v1/booking/cancel-booking?id=${id}`, {
+    headers: { authorization: userObj?.authToken },
+  });
+
+  return data;
+};
