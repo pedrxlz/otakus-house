@@ -61,6 +61,12 @@
   padding: 80px;
 }
 
+@media (max-width: 768px) {
+  .right {
+    padding: 20px;
+  }
+}
+
 .formImgContainer {
   width: 100%;
   display: flex;

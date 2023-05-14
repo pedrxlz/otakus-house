@@ -6,10 +6,12 @@ import Link from "next/link.js";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import Head from "next/head.js";
+import { useMediaQuery } from "@/hooks/useMediaQuery.jsx";
 
 export default function Login() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const isMobile = useMediaQuery("(min-width: 992px)");
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -121,6 +123,19 @@ export default function Login() {
                 )}
               </button>
             </form>
+            {!isMobile && (
+              <div className="text-center mt-3">
+                <p className="text-body-emphasis">
+                  Não tem uma conta?{" "}
+                  <Link
+                    href="/register"
+                    className="text-body-emphasis text-decoration-none"
+                  >
+                    Crie agora
+                  </Link>
+                </p>
+              </div>
+            )}
           </main>
         </div>
       </div>
