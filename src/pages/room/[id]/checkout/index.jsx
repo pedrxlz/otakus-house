@@ -1,7 +1,32 @@
 import Image from "next/image.js";
 import styles from "./Checkout.module.css";
+import { useRouter } from "next/router.js";
+import { useState } from "react";
+import { diffDays } from "@/utils/index.js";
+import { useRoom } from "@/hooks/swr/useRoom.js";
+import { useMemo } from "react";
 
 export default function Checkout() {
+  const router = useRouter();
+  const { id, checkin, checkout, guests } = router.query;
+
+  const { room } = useRoom({ id });
+
+  const [travelForm, setTravelForm] = useState({ checkin, checkout, guests });
+  const [onEdit, setOnEdit] = useState("");
+
+  const diffDaysValue = useMemo(() => {
+    return diffDays(travelForm.checkin, travelForm.checkout);
+  }, [travelForm.checkin, travelForm.checkout]);
+
+  const onChange = (e) => {
+    const key = e.target.name;
+    const value = e.target.value;
+    setTravelForm((prev) => {
+      return { ...prev, [key]: value };
+    });
+  };
+
   return (
     <div className="container">
       <main>
@@ -15,7 +40,7 @@ export default function Checkout() {
               <li className="list-group-item lh-sm">
                 <div className={`row ${styles.roomInfoContainer}`}>
                   <Image
-                    src="/images/MestreKameHouse.jpg"
+                    src={`/images/${room?.image}`}
                     className="img-thumbnail img-fluid col-4"
                     style={{ objectFit: "cover" }}
                     width={300}
@@ -54,20 +79,22 @@ export default function Checkout() {
                 <br />
                 <div className="d-flex justify-content-between w-100">
                   <small className="text-body-secondary">
-                    R$360,00 x 5 noites
+                    R$ {room?.price} x {diffDaysValue} noites
                   </small>
-                  <span className="text-body-secondary">R$ 1800,00</span>
+                  <span className="text-body-secondary">
+                    R$ {diffDaysValue * room?.price}
+                  </span>
                 </div>
                 <div className="d-flex justify-content-between w-100">
                   <small className="text-body-secondary">Taxa de serviço</small>
-                  <span className="text-body-secondary">R$ R$261,71</span>
+                  <span className="text-body-secondary">R$ 100</span>
                 </div>
                 <br />
               </li>
 
               <li className="list-group-item d-flex justify-content-between">
                 <h6>Total (BRL)</h6>
-                <strong>R$2.061,71</strong>
+                <strong>R$ {diffDaysValue * room?.price + 100}</strong>
               </li>
             </ul>
           </div>
@@ -77,13 +104,102 @@ export default function Checkout() {
             <div className="row justify-content-center">
               <div className="col-md-12 edit">
                 <label className="form-label fw-semibold">Datas</label>
-                <p className="form-label fw-normal">16 - 21 mar</p>
-                <span className="fw-semibold edit-item">Editar</span>
+                {onEdit === "date" ? (
+                  <div className="d-flex flex-column gap-2 py-3">
+                    <div className="form-floating">
+                      <input
+                        type="date"
+                        name="checkin"
+                        className="form-control"
+                        value={travelForm.checkin}
+                        onChange={onChange}
+                      />
+                      <label htmlFor="floatingPassword">Checkin</label>
+                    </div>
+
+                    <div className="form-floating">
+                      <input
+                        type="date"
+                        name="checkout"
+                        className="form-control"
+                        value={travelForm.checkout}
+                        onChange={onChange}
+                      />
+                      <label htmlFor="floatingPassword">Checkout</label>
+                    </div>
+                    <span
+                      className={`fw-semibold ${styles.editItem}`}
+                      onClick={() => setOnEdit("")}
+                    >
+                      Cancelar
+                    </span>
+                    <button
+                      name={"name"}
+                      className={`btn btn-lg ${styles.btnSave}`}
+                      onClick={() => setOnEdit("")}
+                    >
+                      Salvar
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <p className="form-label fw-normal">
+                      {new Date(travelForm.checkin).toLocaleDateString()} -{" "}
+                      {new Date(travelForm.checkout).toLocaleDateString()}
+                    </p>
+                    <span
+                      className="fw-semibold edit-item"
+                      onClick={() => setOnEdit("date")}
+                    >
+                      Editar
+                    </span>
+                  </>
+                )}
               </div>
               <div className="col-md-12 edit">
                 <label className="form-label fw-semibold">Hóspedes</label>
-                <p className="form-label fw-normal">1 Hóspede</p>
-                <span className="fw-semibold edit-item">Editar</span>
+                {onEdit === "guests" ? (
+                  <div className="d-flex flex-column gap-2 py-3">
+                    <select
+                      className="form-select"
+                      name="guests"
+                      value={travelForm.guests}
+                      onChange={onChange}
+                    >
+                      <option value="">Escolha...</option>
+                      <option value="1">1 Hóspede</option>
+                      <option value="2">2 Hóspedes</option>
+                      <option value="3">3 Hóspedes</option>
+                      <option value="4">4 Hóspedes</option>
+                    </select>
+                    <span
+                      className={`fw-semibold ${styles.editItem}`}
+                      onClick={() => setOnEdit("")}
+                    >
+                      Cancelar
+                    </span>
+                    <button
+                      name={"name"}
+                      className={`btn btn-lg ${styles.btnSave}`}
+                      onClick={() => setOnEdit("")}
+                    >
+                      Salvar
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    {" "}
+                    <p className="form-label fw-normal">
+                      {travelForm.guests} Hóspede{travelForm.guests > 1 && "s"}
+                    </p>
+                    <span
+                      className="fw-semibold edit-item"
+                      onClick={() => setOnEdit("guests")}
+                    >
+                      Editar
+                    </span>
+                  </>
+                )}
               </div>
             </div>
             <form className="needs-validation">
