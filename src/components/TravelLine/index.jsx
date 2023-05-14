@@ -8,7 +8,7 @@ export default function TravelLine({ travel }) {
   return (
     <div
       className={styles.listCard}
-      onClick={() => router.push(`travels/${travel?.room?.id}`)}
+      onClick={() => router.push(`travels/${travel?._id}`)}
     >
       <Image
         src={`/images/${travel?.room?.image}`}

@@ -6,18 +6,16 @@ const fetcher = (url, authorization) =>
     .get(url, { headers: { authorization: authorization } })
     .then((res) => res.data);
 
-export const useUserTravels = ({ expired }) => {
+export const useTravel = ({ id }) => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const { data, mutate, isLoading, error } = useSWR(
-    user._id
-      ? `api/v1/booking/get-bookings?userId=${user._id}&expired=${expired}`
-      : null,
+    id ? `api/v1/booking/get-booking?id=${id}` : null,
     (url) => fetcher(url, user.authToken)
   );
 
   return {
-    travels: data,
+    travel: data[0],
     mutate,
     isLoading,
     error: error?.response?.data?.error,
