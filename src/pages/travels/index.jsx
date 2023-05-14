@@ -3,6 +3,7 @@ import TravelLine from "../../components/TravelLine/index.jsx";
 import { useState } from "react";
 import styles from "./Travels.module.css";
 import { useUserTravels } from "@/hooks/swr/useUserTravels.js";
+import TravelLineSkeleton from "@/components/TravelLine/TravelLineSkeleton.jsx";
 
 export default function Travels() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -32,9 +33,13 @@ export default function Travels() {
               </button>
             </div>
             <div className="d-flex gap-2 flex-column my-4">
-              {travels?.map((travel) => (
-                <TravelLine key={travel?.id} travel={travel} />
-              ))}
+              {!isLoading
+                ? travels?.map((travel) => (
+                    <TravelLine key={travel?.id} travel={travel} />
+                  ))
+                : Array.from(new Array(5)).map((_, index) => (
+                    <TravelLineSkeleton key={index} />
+                  ))}
             </div>
           </div>
         </div>
