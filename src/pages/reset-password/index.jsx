@@ -69,7 +69,7 @@ export default function ChangePassword() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <label for="floatingInput">Senha</label>
+              <label htmlFor="floatingInput">Senha</label>
             </div>
 
             <br />
@@ -81,7 +81,7 @@ export default function ChangePassword() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
-              <label for="floatingPassword">Confirmar senha</label>
+              <label htmlFor="floatingPassword">Confirmar senha</label>
             </div>
             {!IS_PASSWORD_VALIDATED && (
               <p

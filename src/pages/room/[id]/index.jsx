@@ -1,13 +1,39 @@
 import { useRoom } from "@/hooks/swr/useRoom.js";
+import { diffDays, urlParams } from "@/utils/index.js";
 import Image from "next/image.js";
 import { useRouter } from "next/router.js";
+import { useMemo } from "react";
+import { useState } from "react";
 
 const Room = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  const [form, setForm] = useState({
+    checkin: "",
+    checkout: "",
+    guests: "",
+  });
+
   const { room } = useRoom({ id });
-  console.log(room);
+
+  const onChange = (e) => {
+    const key = e.target.name;
+    const value = e.target.value;
+    setForm((prev) => {
+      return { ...prev, [key]: value };
+    });
+  };
+
+  const IS_FORM_DISABLED = useMemo(() => {
+    const states = [form.checkin, form.checkout, form.guests];
+    return states.includes("");
+  }, [form.checkin, form.checkout, form.guests]);
+
+  const diffDaysValue = useMemo(() => {
+    return diffDays(form.checkin, form.checkout);
+  }, [form.checkin, form.checkout]);
+
   return (
     <>
       <div className="container">
@@ -81,25 +107,42 @@ const Room = () => {
                 </div>
 
                 <div className="form-floating">
-                  <input type="date" className="form-control" />
-                  <label for="floatingPassword">Checkin</label>
+                  <input
+                    type="date"
+                    name="checkin"
+                    className="form-control"
+                    value={form.checkin}
+                    onChange={onChange}
+                  />
+                  <label htmlFor="floatingPassword">Checkin</label>
                 </div>
 
                 <div className="form-floating">
-                  <input type="date" className="form-control" />
-                  <label for="floatingPassword">Checkout</label>
+                  <input
+                    type="date"
+                    name="checkout"
+                    className="form-control"
+                    value={form.checkout}
+                    onChange={onChange}
+                  />
+                  <label htmlFor="floatingPassword">Checkout</label>
                 </div>
 
                 <br />
 
                 <label
-                  for="country"
+                  htmlFor="country"
                   className="form-label text-start fw-medium"
                 >
                   Hóspedes
                 </label>
-                <select className="form-select" id="country">
-                  <option selected>Escolha...</option>
+                <select
+                  className="form-select"
+                  name="guests"
+                  value={form.guests}
+                  onChange={onChange}
+                >
+                  <option value="">Escolha...</option>
                   <option value="1">1 Hóspede</option>
                   <option value="2">2 Hóspedes</option>
                   <option value="3">3 Hóspedes</option>
@@ -108,7 +151,10 @@ const Room = () => {
 
                 <br />
 
-                <h6 className="fw-medium">R$500 x 5 dias = R$ 2.500,00</h6>
+                <h6 className="fw-medium">
+                  R${room?.price} x {diffDaysValue} dias = R$
+                  {diffDaysValue * room?.price}
+                </h6>
 
                 <br />
 
@@ -118,8 +164,10 @@ const Room = () => {
                     className="btn btn-primary btn-lg"
                     style={{ backgroundColor: "#00a39c" }}
                     type="button"
+                    disabled={IS_FORM_DISABLED}
                     onClick={() => {
-                      router.push(`/room/${id}/checkout`);
+                      const strParams = urlParams(form);
+                      router.push(`/room/${id}/checkout${strParams}`);
                     }}
                   >
                     Reservar

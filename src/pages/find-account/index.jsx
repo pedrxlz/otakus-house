@@ -60,7 +60,7 @@ export default function FindAccount() {
               value={value}
               onChange={(e) => setValue(e.target.value)}
             />
-            <label for="floatingInput">Email ou número</label>
+            <label htmlFor="floatingInput">Email ou número</label>
           </div>
 
           <br />

@@ -101,7 +101,7 @@ export default function Checkout() {
                     checked
                     required
                   />
-                  <label className="form-check-label" for="credit">
+                  <label className="form-check-label" htmlFor="credit">
                     Cartão de Crédito
                   </label>
                 </div>
@@ -113,7 +113,7 @@ export default function Checkout() {
                     className="form-check-input"
                     required
                   />
-                  <label className="form-check-label" for="debit">
+                  <label className="form-check-label" htmlFor="debit">
                     Cartão de débito
                   </label>
                 </div>
@@ -121,7 +121,7 @@ export default function Checkout() {
 
               <div className="row gy-3">
                 <div className="col-md-6">
-                  <label for="cc-name" className="form-label">
+                  <label htmlFor="cc-name" className="form-label">
                     Nome no cartão
                   </label>
                   <input
@@ -140,7 +140,7 @@ export default function Checkout() {
                 </div>
 
                 <div className="col-md-6">
-                  <label for="cc-number" className="form-label">
+                  <label htmlFor="cc-number" className="form-label">
                     Número do cartão
                   </label>
                   <input
@@ -156,7 +156,7 @@ export default function Checkout() {
                 </div>
 
                 <div className="col-md-3">
-                  <label for="cc-expiration" className="form-label">
+                  <label htmlFor="cc-expiration" className="form-label">
                     Vencimento
                   </label>
                   <input
@@ -172,7 +172,7 @@ export default function Checkout() {
                 </div>
 
                 <div className="col-md-3">
-                  <label for="cc-cvv" className="form-label">
+                  <label htmlFor="cc-cvv" className="form-label">
                     CVV
                   </label>
                   <input

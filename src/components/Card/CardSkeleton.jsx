@@ -8,7 +8,7 @@ export const CardSkeleton = () => {
       </div>
       <div className="card-body">
         <h5 className="card-title placeholder-glow">
-          <span class="placeholder col-6"></span>
+          <span className="placeholder col-6"></span>
         </h5>
         <h6 className="card-subtitle mb-2 text-body-secondary placeholder-glow">
           <span className="placeholder col-7"></span>

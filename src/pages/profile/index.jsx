@@ -129,7 +129,7 @@ export default function Profile() {
                 <label className="form-label fw-semibold">Nome</label>
                 {onEdit === "name" ? (
                   <>
-                    <div class="d-flex flex-column gap-2 py-3">
+                    <div className="d-flex flex-column gap-2 py-3">
                       <div>
                         <input
                           type="text"
@@ -176,7 +176,7 @@ export default function Profile() {
                 <label className="form-label fw-semibold">Email</label>
                 {onEdit === "email" ? (
                   <>
-                    <div class="d-flex flex-column gap-2 py-3">
+                    <div className="d-flex flex-column gap-2 py-3">
                       <div>
                         <input
                           type="text"
@@ -224,7 +224,7 @@ export default function Profile() {
                 </label>
                 {onEdit === "tel" ? (
                   <>
-                    <div class="d-flex flex-column gap-2 py-3">
+                    <div className="d-flex flex-column gap-2 py-3">
                       <div>
                         <input
                           type="text"
@@ -270,7 +270,7 @@ export default function Profile() {
                 <label className="form-label fw-semibold">Endereço</label>
                 {onEdit === "address" ? (
                   <>
-                    <div class="d-flex flex-column gap-2 py-3">
+                    <div className="d-flex flex-column gap-2 py-3">
                       <div>
                         <input
                           type="text"
