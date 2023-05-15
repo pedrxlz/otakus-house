@@ -7,7 +7,7 @@ export const Card = ({ item }) => {
   return (
     <div className="card" onClick={() => router.push(`/room/${item?.id}`)}>
       <Image
-        src={`/images/${item?.image}`}
+        src={`/images/${item?.image?.[0]}`}
         className="card-img-top img-fluid"
         alt="image"
         width={300}

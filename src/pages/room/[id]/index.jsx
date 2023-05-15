@@ -44,33 +44,20 @@ const Room = () => {
       <div className="container">
         <div id="carrossel" className="carousel slide">
           <div className="carousel-inner">
-            <div className="carousel-item active carousel-img-item">
-              <Image
-                className="w-100 carousel-img"
-                src={`/images/${room?.image}`}
-                width={300}
-                height={200}
-                alt="image"
-              />
-            </div>
-            {/* <div className="carousel-item carousel-img-item">
-              <Image
-                className="w-100 carousel-img"
-                src="/images/GraceField.jpg"
-                width={300}
-                height={200}
-                alt="image"
-              />
-            </div>
-            <div className="carousel-item carousel-img-item">
-              <Image
-                className="w-100 carousel-img"
-                src="/images/HokageMansion.jpg"
-                width={300}
-                height={200}
-                alt="image"
-              />
-            </div> */}
+            {room?.image?.map((image, index) => (
+              <div
+                className="carousel-item active carousel-img-item"
+                key={index}
+              >
+                <Image
+                  className="w-100 carousel-img"
+                  src={`/images/${image}`}
+                  width={300}
+                  height={200}
+                  alt="image"
+                />
+              </div>
+            ))}
           </div>
           <button
             className="carousel-control-prev"

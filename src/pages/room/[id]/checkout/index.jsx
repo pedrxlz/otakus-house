@@ -80,7 +80,7 @@ export default function Checkout() {
               <li className="list-group-item lh-sm">
                 <div className={`row ${styles.roomInfoContainer}`}>
                   <Image
-                    src={`/images/${room?.image}`}
+                    src={`/images/${room?.image?.[0]}`}
                     className="img-thumbnail img-fluid col-4"
                     style={{ objectFit: "cover" }}
                     width={300}

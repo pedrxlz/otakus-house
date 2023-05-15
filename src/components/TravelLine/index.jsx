@@ -11,7 +11,7 @@ export default function TravelLine({ travel }) {
       onClick={() => router.push(`travels/${travel?._id}`)}
     >
       <Image
-        src={`/images/${travel?.room?.image}`}
+        src={`/images/${travel?.room?.image?.[0]}`}
         className="img-thumbnail"
         width={200}
         height={200}

@@ -43,33 +43,17 @@ export default function Travel() {
       </Head>
       <div id="carrossel" className="carousel slide">
         <div className="carousel-inner">
-          <div className="carousel-item active carousel-img-item">
-            <Image
-              className="w-100 carousel-img"
-              src={`/images/${travel?.room?.image}`}
-              alt={"image"}
-              width={200}
-              height={100}
-            />
-          </div>
-          {/* <div className="carousel-item carousel-img-item">
-            <Image
-              className="w-100 carousel-img"
-              src="/images/GraceField.jpg"
-              alt={"image"}
-              width={200}
-              height={100}
-            />
-          </div>
-          <div className="carousel-item carousel-img-item">
-            <Image
-              className="w-100 carousel-img"
-              src="/images/HokageMansion.jpg"
-              alt={"image"}
-              width={200}
-              height={100}
-            />
-          </div> */}
+          {travel?.room?.image?.map((image, index) => (
+            <div className="carousel-item active carousel-img-item" key={index}>
+              <Image
+                className="w-100 carousel-img"
+                src={`/images/${image}`}
+                alt={"image"}
+                width={200}
+                height={100}
+              />
+            </div>
+          ))}
         </div>
         <button
           className="carousel-control-prev"
