@@ -1,25 +1,59 @@
+import { useRoom } from "@/hooks/swr/useRoom.js";
+import { diffDays, urlParams } from "@/utils/index.js";
+import Head from "next/head.js";
 import Image from "next/image.js";
 import { useRouter } from "next/router.js";
+import { useMemo } from "react";
+import { useState } from "react";
 
 const Room = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  const [form, setForm] = useState({
+    checkin: "",
+    checkout: "",
+    guests: "",
+  });
+
+  const { room } = useRoom({ id });
+
+  const onChange = (e) => {
+    const key = e.target.name;
+    const value = e.target.value;
+    setForm((prev) => {
+      return { ...prev, [key]: value };
+    });
+  };
+
+  const IS_FORM_DISABLED = useMemo(() => {
+    const states = [form.checkin, form.checkout, form.guests];
+    return states.includes("");
+  }, [form.checkin, form.checkout, form.guests]);
+
+  const diffDaysValue = useMemo(() => {
+    return diffDays(form.checkin, form.checkout);
+  }, [form.checkin, form.checkout]);
+
   return (
     <>
+      <Head>
+        <title>Reservar - {room?.name} </title>
+        <link rel="icon" href="/images/OtakusHouse.png" />
+      </Head>
       <div className="container">
         <div id="carrossel" className="carousel slide">
           <div className="carousel-inner">
             <div className="carousel-item active carousel-img-item">
               <Image
                 className="w-100 carousel-img"
-                src="/images/Casa Paradis.webp"
+                src={`/images/${room?.image}`}
                 width={300}
                 height={200}
                 alt="image"
               />
             </div>
-            <div className="carousel-item carousel-img-item">
+            {/* <div className="carousel-item carousel-img-item">
               <Image
                 className="w-100 carousel-img"
                 src="/images/GraceField.jpg"
@@ -36,7 +70,7 @@ const Room = () => {
                 height={200}
                 alt="image"
               />
-            </div>
+            </div> */}
           </div>
           <button
             className="carousel-control-prev"
@@ -62,51 +96,58 @@ const Room = () => {
         <section className="description-container">
           <div className="row">
             <div className="description col-lg-8">
-              <h1>Titulo</h1>
+              <h1>{room?.name}</h1>
               <h5>7 hóspedes - 2 quartos - 7 camas - 2 banheiros</h5>
               <h6>Ceará, Brasil</h6>
               <hr />
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-                id lectus vel nibh hendrerit condimentum non vitae risus. Fusce
-                luctus neque id augue accumsan, a lacinia odio tempor. Integer
-                mollis, ante eu venenatis tempus, erat sapien maximus ligula, in
-                interdum magna felis eu sapien. Quisque placerat laoreet
-                condimentum. Praesent vel cursus felis, eu aliquet lacus. Ut
-                gravida arcu hendrerit imperdiet suscipit. Curabitur facilisis,
-                orci et sollicitudin eleifend, orci nisl pulvinar sem, quis
-                blandit justo est a lorem.
-              </p>
+              <p>{room?.description}</p>
             </div>
 
             <div className="col-lg-4">
               <div className="custom-card">
                 <div className="card-header">
                   <p className="fs-3">
-                    <b>R$500</b> noite
+                    <b>R${room?.price}</b> noite
                   </p>
                 </div>
 
                 <div className="form-floating">
-                  <input type="date" className="form-control" />
-                  <label for="floatingPassword">Checkin</label>
+                  <input
+                    type="date"
+                    name="checkin"
+                    className="form-control"
+                    value={form.checkin}
+                    onChange={onChange}
+                  />
+                  <label htmlFor="floatingPassword">Checkin</label>
                 </div>
 
                 <div className="form-floating">
-                  <input type="date" className="form-control" />
-                  <label for="floatingPassword">Checkout</label>
+                  <input
+                    type="date"
+                    name="checkout"
+                    className="form-control"
+                    value={form.checkout}
+                    onChange={onChange}
+                  />
+                  <label htmlFor="floatingPassword">Checkout</label>
                 </div>
 
                 <br />
 
                 <label
-                  for="country"
+                  htmlFor="country"
                   className="form-label text-start fw-medium"
                 >
                   Hóspedes
                 </label>
-                <select className="form-select" id="country">
-                  <option selected>Escolha...</option>
+                <select
+                  className="form-select"
+                  name="guests"
+                  value={form.guests}
+                  onChange={onChange}
+                >
+                  <option value="">Escolha...</option>
                   <option value="1">1 Hóspede</option>
                   <option value="2">2 Hóspedes</option>
                   <option value="3">3 Hóspedes</option>
@@ -115,7 +156,10 @@ const Room = () => {
 
                 <br />
 
-                <h6 className="fw-medium">R$500 x 5 dias = R$ 2.500,00</h6>
+                <h6 className="fw-medium">
+                  R${room?.price} x {diffDaysValue} dias = R$
+                  {diffDaysValue * room?.price}
+                </h6>
 
                 <br />
 
@@ -125,8 +169,10 @@ const Room = () => {
                     className="btn btn-primary btn-lg"
                     style={{ backgroundColor: "#00a39c" }}
                     type="button"
+                    disabled={IS_FORM_DISABLED}
                     onClick={() => {
-                      router.push(`/room/${id}/checkout`);
+                      const strParams = urlParams(form);
+                      router.push(`/room/${id}/checkout${strParams}`);
                     }}
                   >
                     Reservar

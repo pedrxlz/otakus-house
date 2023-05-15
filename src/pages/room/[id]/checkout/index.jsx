@@ -1,9 +1,74 @@
 import Image from "next/image.js";
 import styles from "./Checkout.module.css";
+import { useRouter } from "next/router.js";
+import { useState } from "react";
+import { diffDays } from "@/utils/index.js";
+import { useRoom } from "@/hooks/swr/useRoom.js";
+import { useMemo } from "react";
+import { createBooking } from "@/services/booking/index.js";
+import { toast } from "react-toastify";
+import Head from "next/head.js";
 
 export default function Checkout() {
+  const router = useRouter();
+  const { id, checkin, checkout, guests } = router.query;
+
+  const { room } = useRoom({ id });
+
+  const [travelForm, setTravelForm] = useState({ checkin, checkout, guests });
+  const [onEdit, setOnEdit] = useState("");
+
+  const diffDaysValue = useMemo(() => {
+    return diffDays(travelForm.checkin, travelForm.checkout);
+  }, [travelForm.checkin, travelForm.checkout]);
+
+  const onChange = (e) => {
+    const key = e.target.name;
+    const value = e.target.value;
+    setTravelForm((prev) => {
+      return { ...prev, [key]: value };
+    });
+  };
+
+  const handleCheckout = (e) => {
+    e.preventDefault();
+    const user = JSON.parse(localStorage.getItem("user"));
+    const body = {
+      user: user._id,
+      room: room._id,
+      checkinDate: new Date(travelForm.checkin).getTime(),
+      checkoutDate: new Date(travelForm.checkout).getTime(),
+      guests: travelForm.guests,
+    };
+
+    toast.promise(createBooking(body), {
+      pending: {
+        render() {
+          return "Processando...";
+        },
+        icon: true,
+      },
+      success: {
+        render() {
+          router.push("/travels");
+          return `Reserva efetuada!`;
+        },
+        autoClose: 1000,
+      },
+      error: {
+        render({ data }) {
+          return data?.response?.data?.error;
+        },
+      },
+    });
+  };
+
   return (
     <div className="container">
+      <Head>
+        <title>Reservar - {room?.name}</title>
+        <link rel="icon" href="/images/OtakusHouse.png" />
+      </Head>
       <main>
         <div className="text-left">
           <h1 className="fw-bolder">Reservar</h1>
@@ -15,7 +80,7 @@ export default function Checkout() {
               <li className="list-group-item lh-sm">
                 <div className={`row ${styles.roomInfoContainer}`}>
                   <Image
-                    src="/images/MestreKameHouse.jpg"
+                    src={`/images/${room?.image}`}
                     className="img-thumbnail img-fluid col-4"
                     style={{ objectFit: "cover" }}
                     width={300}
@@ -54,20 +119,22 @@ export default function Checkout() {
                 <br />
                 <div className="d-flex justify-content-between w-100">
                   <small className="text-body-secondary">
-                    R$360,00 x 5 noites
+                    R$ {room?.price} x {diffDaysValue} noites
                   </small>
-                  <span className="text-body-secondary">R$ 1800,00</span>
+                  <span className="text-body-secondary">
+                    R$ {diffDaysValue * room?.price}
+                  </span>
                 </div>
                 <div className="d-flex justify-content-between w-100">
                   <small className="text-body-secondary">Taxa de serviço</small>
-                  <span className="text-body-secondary">R$ R$261,71</span>
+                  <span className="text-body-secondary">R$ 100</span>
                 </div>
                 <br />
               </li>
 
               <li className="list-group-item d-flex justify-content-between">
                 <h6>Total (BRL)</h6>
-                <strong>R$2.061,71</strong>
+                <strong>R$ {diffDaysValue * room?.price + 100}</strong>
               </li>
             </ul>
           </div>
@@ -77,16 +144,105 @@ export default function Checkout() {
             <div className="row justify-content-center">
               <div className="col-md-12 edit">
                 <label className="form-label fw-semibold">Datas</label>
-                <p className="form-label fw-normal">16 - 21 mar</p>
-                <span className="fw-semibold edit-item">Editar</span>
+                {onEdit === "date" ? (
+                  <div className="d-flex flex-column gap-2 py-3">
+                    <div className="form-floating">
+                      <input
+                        type="date"
+                        name="checkin"
+                        className="form-control"
+                        value={travelForm.checkin}
+                        onChange={onChange}
+                      />
+                      <label htmlFor="floatingPassword">Checkin</label>
+                    </div>
+
+                    <div className="form-floating">
+                      <input
+                        type="date"
+                        name="checkout"
+                        className="form-control"
+                        value={travelForm.checkout}
+                        onChange={onChange}
+                      />
+                      <label htmlFor="floatingPassword">Checkout</label>
+                    </div>
+                    <span
+                      className={`fw-semibold ${styles.editItem}`}
+                      onClick={() => setOnEdit("")}
+                    >
+                      Cancelar
+                    </span>
+                    <button
+                      name={"name"}
+                      className={`btn btn-lg ${styles.btnSave}`}
+                      onClick={() => setOnEdit("")}
+                    >
+                      Salvar
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <p className="form-label fw-normal">
+                      {new Date(travelForm.checkin).toLocaleDateString()} -{" "}
+                      {new Date(travelForm.checkout).toLocaleDateString()}
+                    </p>
+                    <span
+                      className="fw-semibold edit-item"
+                      onClick={() => setOnEdit("date")}
+                    >
+                      Editar
+                    </span>
+                  </>
+                )}
               </div>
               <div className="col-md-12 edit">
                 <label className="form-label fw-semibold">Hóspedes</label>
-                <p className="form-label fw-normal">1 Hóspede</p>
-                <span className="fw-semibold edit-item">Editar</span>
+                {onEdit === "guests" ? (
+                  <div className="d-flex flex-column gap-2 py-3">
+                    <select
+                      className="form-select"
+                      name="guests"
+                      value={travelForm.guests}
+                      onChange={onChange}
+                    >
+                      <option value="">Escolha...</option>
+                      <option value="1">1 Hóspede</option>
+                      <option value="2">2 Hóspedes</option>
+                      <option value="3">3 Hóspedes</option>
+                      <option value="4">4 Hóspedes</option>
+                    </select>
+                    <span
+                      className={`fw-semibold ${styles.editItem}`}
+                      onClick={() => setOnEdit("")}
+                    >
+                      Cancelar
+                    </span>
+                    <button
+                      name={"name"}
+                      className={`btn btn-lg ${styles.btnSave}`}
+                      onClick={() => setOnEdit("")}
+                    >
+                      Salvar
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    {" "}
+                    <p className="form-label fw-normal">
+                      {travelForm.guests} Hóspede{travelForm.guests > 1 && "s"}
+                    </p>
+                    <span
+                      className="fw-semibold edit-item"
+                      onClick={() => setOnEdit("guests")}
+                    >
+                      Editar
+                    </span>
+                  </>
+                )}
               </div>
             </div>
-            <form className="needs-validation">
+            <form className="needs-validation" onSubmit={handleCheckout}>
               <hr className="my-4" />
 
               <h4 className="mb-3">Pagamento</h4>
@@ -101,7 +257,7 @@ export default function Checkout() {
                     checked
                     required
                   />
-                  <label className="form-check-label" for="credit">
+                  <label className="form-check-label" htmlFor="credit">
                     Cartão de Crédito
                   </label>
                 </div>
@@ -113,7 +269,7 @@ export default function Checkout() {
                     className="form-check-input"
                     required
                   />
-                  <label className="form-check-label" for="debit">
+                  <label className="form-check-label" htmlFor="debit">
                     Cartão de débito
                   </label>
                 </div>
@@ -121,7 +277,7 @@ export default function Checkout() {
 
               <div className="row gy-3">
                 <div className="col-md-6">
-                  <label for="cc-name" className="form-label">
+                  <label htmlFor="cc-name" className="form-label">
                     Nome no cartão
                   </label>
                   <input
@@ -140,7 +296,7 @@ export default function Checkout() {
                 </div>
 
                 <div className="col-md-6">
-                  <label for="cc-number" className="form-label">
+                  <label htmlFor="cc-number" className="form-label">
                     Número do cartão
                   </label>
                   <input
@@ -156,7 +312,7 @@ export default function Checkout() {
                 </div>
 
                 <div className="col-md-3">
-                  <label for="cc-expiration" className="form-label">
+                  <label htmlFor="cc-expiration" className="form-label">
                     Vencimento
                   </label>
                   <input
@@ -172,7 +328,7 @@ export default function Checkout() {
                 </div>
 
                 <div className="col-md-3">
-                  <label for="cc-cvv" className="form-label">
+                  <label htmlFor="cc-cvv" className="form-label">
                     CVV
                   </label>
                   <input
@@ -193,7 +349,6 @@ export default function Checkout() {
               <button
                 className="w-100 btn btn-lg btn-primary"
                 style={{ backgroundColor: "#00a39c" }}
-                type="submit"
               >
                 Reservar
               </button>

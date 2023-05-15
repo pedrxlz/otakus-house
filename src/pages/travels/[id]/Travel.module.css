@@ -2,6 +2,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 6px;
+}
+
+@media (min-width: 768px) {
+  .infoDateContainer {
+    flex-direction: column;
+  }
 }
 
 .infoDateField {
@@ -10,6 +17,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .container-fluid {

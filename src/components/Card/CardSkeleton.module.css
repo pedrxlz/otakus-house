@@ -1,29 +1,7 @@
-.listCard {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  position: relative;
-}
-
-.listCard img {
-  width: 108px;
-  height: 94px;
-  object-fit: cover;
-  border: none;
-  border-radius: 12px;
-}
-.listCard .skeleton {
-  width: 108px;
-  height: 94px;
-  object-fit: cover;
-  border: none;
-  border-radius: 12px;
-}
 .skeleton {
   width: 100%;
   height: 100%;
-  background-color: #a8a8a8;
+  background-color: #f2f2f2;
   position: relative;
   overflow: hidden;
 }
