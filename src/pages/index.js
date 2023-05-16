@@ -26,7 +26,9 @@ export default function Home() {
             ) : (
               <>
                 {Array.from(new Array(6)).map((_, index) => (
-                  <CardSkeleton key={index} />
+                  <div key={index} className="col">
+                    <CardSkeleton key={index} />
+                  </div>
                 ))}
               </>
             )}
